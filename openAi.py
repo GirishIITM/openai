@@ -9,6 +9,7 @@ messages = {}
 
 
 def openAiChat(data):
+    return "Hello"
     try:
         userId = data["userId"]
         prompt = data["prompt"]
@@ -28,12 +29,7 @@ def openAiChat(data):
         )
 
         response = chat_completion.choices[0].message.content
-        print(response)[
-            {
-                "role": "user",
-                "content": "Say this is a test",
-            }
-        ]
+        print(response)
         return response
 
     except Exception as e:

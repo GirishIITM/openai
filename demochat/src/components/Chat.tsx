@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { FaTelegramPlane } from 'react-icons/fa'
+import subMitAndfetchResponse from '../subMitAndfetchResponse'
 
 export default function Chat() {
 
@@ -10,10 +11,18 @@ export default function Chat() {
     useEffect(() => {
     }, [])
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!input) return toast.error('Please enter a message')
         setMessages([...messages, input])
         setInput('')
+
+        subMitAndfetchResponse({ userId: '123', prompt: input })
+            .then(response => {
+                setMessages([...messages, response])
+            })
+            .catch(error => {
+                setMessages([...messages, 'Error: ' + error])
+            })
     }
 
     return (
@@ -26,7 +35,7 @@ export default function Chat() {
                 ))}
             </div>
             <div className="input_box">
-                <textarea name="" id="" placeholder='Enter the prompt'
+                <textarea name="" id="" placeholder='Enter the prompt, CTRL + Enter to send'
                     onKeyDown={e => (e.key === 'Enter' && e.ctrlKey) && handleSubmit()}
                     value={input} onChange={(e) => setInput(e.target.value)} />
                 <button onClick={handleSubmit}><FaTelegramPlane /></button>
