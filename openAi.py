@@ -1,21 +1,45 @@
-import openai
+from openai import OpenAI
 
-openai.api_key = 'your-api-key'
+client = OpenAI(
+    api_key="sk-proj-O9lg3fmlnmx2WPP9VOWqT3BlbkFJSczlQbEjPwbEEsMgR9Te",
+)
 
-prompt = "Once upon a time,"
+messages = {}
 
-def generate_response(prompt):
-    response = openai.Completion.create(
-        engine="davinci", 
-        prompt=prompt,
-        max_tokens=150  
-    )
-    return response['choices'][0]['text'].strip()
 
-prompt += " there was a wizard who..."
-response1 = generate_response(prompt)
-print("Response 1:", response1)
+def openAiChat(data):
+    try:
+        userId = data["userId"]
+        prompt = data["prompt"]
+        content = {
+            "role": "user",
+            "content": prompt
+        }
+        
+        if (messages[userId]):
+            messages[userId].append(content)
+        else:
+            messages[userId] = [content]
 
-prompt += f" {response1} He used his powers to..."
-response2 = generate_response(prompt)
-print("Response 2:", response2)
+        chat_completion = client.chat.completions.create(
+            messages=messages[userId],
+            model="gpt-3.5-turbo",
+        )
+
+        response = chat_completion.choices[0].message.content
+        print(response)[
+            {
+                "role": "user",
+                "content": "Say this is a test",
+            }
+        ]
+        return response
+
+    except Exception as e:
+        print(e)
+
+
+openAiChat({
+    "userId": "girish",
+    "prompt": "say hello"
+})
