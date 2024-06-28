@@ -1,5 +1,6 @@
 from openai import OpenAI
 
+
 client = OpenAI(
     api_key="sk-proj-O9lg3fmlnmx2WPP9VOWqT3BlbkFJSczlQbEjPwbEEsMgR9Te",
 )

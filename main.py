@@ -9,3 +9,6 @@ def chat():
     data = request.get_json()
     response = openAiChat(data)
     return jsonify({"message": response})
+
+
+app.run(port=5000, debug=True)
