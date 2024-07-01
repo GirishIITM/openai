@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { FaTelegramPlane } from 'react-icons/fa'
 import subMitAndfetchResponse from '../subMitAndfetchResponse'
+import '../styles/chat.css'
 
 export default function Chat() {
 
