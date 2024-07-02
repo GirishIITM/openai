@@ -1,17 +1,103 @@
-.fine_tune{
+.fine_tune {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    padding: 0 10px;
-    gap: 10px;
+    padding: 20px;
+    gap: 30px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
-.fine_tune textarea{
+.fine_tune textarea {
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
     width: 100%;
-    height: 500px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    box-sizing: border-box;
+    height: 50vh;
     resize: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.fine_tune textarea:focus {
+    border-color: #66afe9;
+    outline: none;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.fine_tune form {
+    width: 100%;
+    box-sizing: border-box;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fine_tune form div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.fine_tune form label {
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.fine_tune form input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    appearance: none;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.fine_tune form input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.fine_tune form input[type="range"]:active::-webkit-slider-thumb {
+    background: #0056b3;
+}
+
+.fine_tune form button {
+    margin: 10px auto;
+    width: 200px;
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.fine_tune form button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.fine_tune form button:active {
+    background-color: #003f7f;
+    transform: scale(0.98);
+}
+
+.fine_tune form p {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #666;
+    font-size: 14px;
 }

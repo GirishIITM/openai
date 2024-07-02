@@ -16,7 +16,7 @@ def chat():
 @app.route("/setFineTune", methods=["POST"])
 def sfineTune():
     data = request.get_json()
-    response = getfineTune(data)
+    response = setfineTune(data)
     return jsonify({"message": response})
 
 
