@@ -2,3 +2,4 @@ myenv
 .idea
 _pycache_
 node_modules
+dist
