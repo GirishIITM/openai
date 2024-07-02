@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import "../styles/fineTune.css"
 import { fineTuneType, getfineTune, setfineTune } from "../services/fineTune"
-import toast from "react-hot-toast"
 
 const initState: fineTuneType = {
   prompt: "",
