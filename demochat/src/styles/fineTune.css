@@ -1,0 +1,17 @@
+.fine_tune{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 10px;
+    gap: 10px;
+}
+
+.fine_tune textarea{
+    width: 100%;
+    height: 500px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none;
+}
