@@ -1,5 +1,5 @@
 from openai import OpenAI
-
+import json
 
 client = OpenAI(
     api_key="sk-proj-O9lg3fmlnmx2WPP9VOWqT3BlbkFJSczlQbEjPwbEEsMgR9Te",
@@ -17,7 +17,7 @@ def openAiChat(data):
             "role": "user",
             "content": prompt
         }
-        
+
         if (messages[userId]):
             messages[userId].append(content)
         else:
@@ -40,3 +40,24 @@ openAiChat({
     "userId": "girish",
     "prompt": "say hello"
 })
+
+
+def setfineTune(details):
+    try:
+        f = open("fineTune.json", "w")
+        f.write(json.dumps(details))
+        f.close()
+    except Exception as e:
+        print(e)
+        return "internal server error"
+
+
+def getfineTune():
+    try:
+        f = open("fineTune.json", "r")
+        data = f.read()
+        f.close()
+        return json.loads(data)
+    except Exception as e:
+        print(e)
+        return "internal server error"
