@@ -1,9 +1,9 @@
 from openai import OpenAI
+import os
 import json
-
-client = OpenAI(
-    api_key="sk-proj-O9lg3fmlnmx2WPP9VOWqT3BlbkFJSczlQbEjPwbEEsMgR9Te",
-)
+from langchain.agents.agent_types import AgentType
+from langchain_openai import ChatOpenAI, OpenAI
+from langchain_experimental.agents.agent_toolkits import create_csv_agent
 
 messages = {}
 data = {}
@@ -18,6 +18,7 @@ except Exception as e:
 
 def openAiChat(data):
     try:
+        print(data)
         userId = data["userId"]
         prompt = data["prompt"]
         prompt = prompt + data["prompt"]
@@ -27,11 +28,15 @@ def openAiChat(data):
         }
 
         agent = create_csv_agent(
-            OpenAI(temperature=0),
-            "titanic.csv",
+            ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613",api_key="sk-proj-2sHF2xEZiznorUs4TMd3T3BlbkFJl9c9z1PspIx0udBsDHHI"),
+            "apartment_data.csv",
             verbose=True,
-            agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+            agent_type=AgentType.OPENAI_FUNCTIONS,
         )
+
+        response = agent.run("how many rows are there?")
+        print(response)
+        return response
 
     except Exception as e:
         print(e)
