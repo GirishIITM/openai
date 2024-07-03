@@ -17,7 +17,7 @@ export default function Chat() {
         setMessages([...messages, input])
         setInput('')
 
-        subMitAndfetchResponse({ userId: '123', prompt: input })
+        subMitAndfetchResponse({ userId: 'gir123', prompt: input })
             .then(response => {
                 setMessages([...messages, response])
             })
