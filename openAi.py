@@ -1,9 +1,47 @@
-from openai import OpenAI
 import os
 import json
-from langchain.agents.agent_types import AgentType
-from langchain_openai import ChatOpenAI, OpenAI
-from langchain_experimental.agents.agent_toolkits import create_csv_agent
+from langchain_community.document_loaders import CSVLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain.prompts import ChatPromptTemplate
+from langchain_community.vectorstores import Chroma
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from langchain_openai import ChatOpenAI
+
+
+api_key = "sk-proj-2sHF2xEZiznorUs4TMd3T3BlbkFJl9c9z1PspIx0udBsDHHI"
+
+
+def openAi():
+    embedding_function = OpenAIEmbeddings(api_key=api_key, model="gpt-3.5-turbo")
+
+    loader = CSVLoader("./apartment_data.csv", encoding="utf-8")
+    documents = loader.load()
+
+    db = Chroma.from_documents(documents, embedding_function)
+    retriever = db.as_retriever()
+
+    template = """Answer the question based only on the following context:
+    {context}
+
+    Question: {question}
+    """
+    prompt = ChatPromptTemplate.from_template(template)
+
+    model = ChatOpenAI(api_key=api_key, model="gpt-3.5-turbo",
+                       max_tokens=100, temperature=0.5)
+
+    chain = (
+        {"context": retriever, "question": RunnablePassthrough()}
+        | prompt
+        | model
+        | StrOutputParser()
+    )
+
+    print(chain.invoke("What bank failed in North Carolina?"))
+
+
+openAi()
 
 messages = {}
 data = {}
@@ -27,16 +65,7 @@ def openAiChat(data):
             "content": prompt
         }
 
-        agent = create_csv_agent(
-            ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613",api_key="sk-proj-2sHF2xEZiznorUs4TMd3T3BlbkFJl9c9z1PspIx0udBsDHHI"),
-            "apartment_data.csv",
-            verbose=True,
-            agent_type=AgentType.OPENAI_FUNCTIONS,
-        )
-
-        response = agent.run("how many rows are there?")
-        print(response)
-        return response
+        return "response"
 
     except Exception as e:
         print(e)
@@ -66,3 +95,6 @@ def getfineTune():
     except Exception as e:
         print(e)
         return "internal server error"
+
+
+openAi()
