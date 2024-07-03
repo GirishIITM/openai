@@ -54,3 +54,16 @@ textarea:focus, button:focus {
 button:hover {
     background-color: #0056b3;
 }
+
+.chat input{
+    width: 200px;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.chat input:focus {
+    outline: none;
+}

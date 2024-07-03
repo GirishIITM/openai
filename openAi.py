@@ -23,6 +23,7 @@ except Exception as e:
     traceback.print_exc()
 
 
+
 def openAi(query):
     try:
         embedding_function = OpenAIEmbeddings(api_key=api_key)
@@ -33,37 +34,70 @@ def openAi(query):
         db = Chroma.from_documents(
             documents, embedding_function, persist_directory="./chroma")
         retriever = db.as_retriever()
+        
+        # Define the rate for different types of apartments
         rate = data.get("rate", {
             "1BD": 2200,
             "2BD": 2650,
             "3BD": 2850
         })
-        rate_string = ', '.join(f'{key}: {value}' for key, value in rate.items())
-        prompt = data.get("prompt", "Hi! Thanks for reaching out to XYZ Realty about our apartments for rent. I'm on the other line and will call you back soon.\nWhich property are you reaching out about?\n[User provides the property name]\nGot it. We'll call you back soon. What's your name?\n[If user already provided name earlier] Got it. We'll call you back soon.\nThanks. Do you mind sharing if there are any special amenities you are looking for or any other requirements?\n[If user asks about amenities, price, availability, minimum credit, or income]\n[Look up the information on the Google Sheet]\nGot it. Our team will be with you shortly.\nPlease can you also share your income and credit so we can verify that your application would be accepted? We have many options for apartments in this area, and if this building doesn't work for you we can perhaps help you with an apartment somewhere else.\n[If the user shares their income and credit, look up the sheet to see if they are eligible]\nGreat! Your income and credit meet the requirements of the application process for this building. I'll give you a call shortly.",)
-        template = "here is the rate for the apartments as per number of beds in dollars: \n" + rate_string +"\n" 
-        + "and this is some of example responses and guidence how should be your response if user asks any query just directly answer other wise follow below instrouctions" 
-        + prompt
+        rate_string = ', '.join(f'{key}: ${value}' for key, value in rate.items())
+        
+        # Define the initial prompt that guides the conversation
+        prompt = data.get("prompt", """
+            Hi! Thanks for reaching out to XYZ Realty about our apartments for rent. 
+            I'm on the other line and will call you back soon.
+            Which property are you reaching out about?
+            [User provides the property name]
+            Got it. We'll call you back soon. 
+            What's your name?
+            [If user already provided name earlier] Got it. We'll call you back soon.
+            Thanks. Do you mind sharing if there are any special amenities you are looking for or any other requirements?
+            [If user asks about amenities, price, availability, minimum credit, or income]
+            [Look up the information on the Google Sheet]
+            Got it. Our team will be with you shortly.
+            Please can you also share your income and credit so we can verify that your application would be accepted? 
+            We have many options for apartments in this area, and if this building doesn't work for you we can perhaps help you with an apartment somewhere else.
+            [If the user shares their income and credit, look up the sheet to see if they are eligible]
+            Great! Your income and credit meet the requirements of the application process for this building. 
+            I'll give you a call shortly.
+        """)
 
+        # Combine the rate information and the prompt into the initial template
+        textPrompt = f"""Here are the rates for our apartments based on the number of bedrooms:
+            {rate_string}
+            This is an example of how I can assist you. Please ask your query below:
+            {prompt}
+            User Query: {query}
+        """
+        
+        # Create the template using the combined prompt and rate information
+        template = ChatPromptTemplate.from_template(textPrompt)
+
+        # Initialize the OpenAI model
         model = ChatOpenAI(
             api_key=api_key, model="gpt-3.5-turbo",
-            max_tokens=data.get("maxTokens", 1000),
-            temperature=data.get("temperature", 1000))
+            max_tokens=data.get("maxTokens", 100),
+            temperature=data.get("temperature", 0.7))
 
+        # Chain components to process the query and generate a response
         chain = (
             {"context": retriever, "question": RunnablePassthrough()}
             | template
             | model
             | StrOutputParser()
         )
-
+        
+        # Invoke the chain with the user query to get the response
         response = chain.invoke(query)
         return response
+
     except Exception as e:
         print(e)
         traceback.print_exc()
-        return "internal server error"
-
-
+        return "Internal server error"
+    
+    
 def openAiChat(req):
     try:
         userId = req["userId"]

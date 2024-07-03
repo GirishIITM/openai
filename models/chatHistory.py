@@ -22,4 +22,12 @@ def create_chat_history(username):
 
     return chat
 
-create_chat_history('girish')
+# create_chat_history('girish')
+
+def delete_all_chat_history():
+    db = client['chat_db']
+    collection = db['chat_history']
+    collection.delete_many({})
+    return "All chat history deleted"
+
+delete_all_chat_history()

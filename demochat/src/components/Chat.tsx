@@ -8,26 +8,28 @@ export default function Chat() {
 
     const [messages, setMessages] = React.useState<string[]>([])
     const [input, setInput] = React.useState('')
+    const inputRef = React.useRef<HTMLInputElement>(null)
 
-    useEffect(() => {
-    }, [])
 
     const handleSubmit = async () => {
         if (!input) return toast.error('Please enter a message')
-        setMessages([...messages, input])
+        setMessages(messages => [...messages, input])
         setInput('')
 
-        subMitAndfetchResponse({ userId: 'gir123', prompt: input })
+        subMitAndfetchResponse({ userId: inputRef.current?.value || "girish", prompt: input })
             .then(response => {
-                setMessages([...messages, response])
+                setMessages(messages => [...messages, response])
             })
             .catch(error => {
-                setMessages([...messages, 'Error: ' + error])
+                setMessages(messages => [...messages, 'Error: ' + error])
             })
     }
 
     return (
         <div className='chat'>
+            <div>
+                <input ref={inputRef} type="text" placeholder='your name' />
+            </div>
             <div className="chats">
                 {messages.map((message, index) => (
                     <div key={index} className="message">
