@@ -6,7 +6,6 @@ const initState: fineTuneType = {
   prompt: "",
   maxToken: 0,
   temperature: 0,
-  topP: 0,
   maxCharacters: 0,
   eroor: ""
 }
@@ -23,10 +22,19 @@ export default function FineTune() {
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
-    setFineTune({
-      ...fineTune,
-      [e.target.name]: e.target.value
-    })
+    if (e.target.name === "rate")
+      setFineTune({
+        ...fineTune,
+        rate: {
+          ...fineTune.rate,
+          [e.target.name as string]: +(e.target.value || 0)
+        }
+      })
+    else
+      setFineTune({
+        ...fineTune,
+        [e.target.name]: e.target.value
+      })
   }
 
   const handleSubmit = async () => {
@@ -52,15 +60,30 @@ export default function FineTune() {
           <p>Controls the randomness of the response. Lower values make the model more deterministic. : {fineTune.temperature}</p>
         </div>
         <div>
-          <label htmlFor="topP">Top P</label>
-          <input onChange={handleChange} type="range" name="topP" value={fineTune.topP} max={100} min={0} />
-          <p>Controls diversity via nucleus sampling. : {fineTune.topP}</p>
-        </div>
-        <div>
           <label htmlFor="maxCharacters">Max Characters</label>
           <input onChange={handleChange} type="range" name="maxCharacters" value={fineTune.maxCharacters} max={1000} min={100} />
           <p>Defines the maximum number of characters allowed in the response. : {fineTune.maxCharacters}</p>
         </div>
+        <div>
+          <h3>
+            This is the rate at which the model will charge for the number of bedrooms in the house. The model will charge the rate for the number of bedrooms in the appartment.
+          </h3>
+          <div>
+            <input onChange={handleChange} type="range" name="1BD" value={fineTune.rate?.["1BD"]} max={10000} min={10} />
+            <label>1BD : $ {fineTune.rate?.["1BD"]}</label>
+          </div>
+
+          <div>
+            <input onChange={handleChange} type="range" name="2BD" value={fineTune.rate?.["2BD"]} max={10000} min={10} />
+            <label>2BD : $ {fineTune.rate?.["2BD"]}</label>
+          </div>
+
+          <div>
+            <input onChange={handleChange} type="range" name="3BD" value={fineTune.rate?.["3BD"]} max={10000} min={10} />
+            <label>3BD : $ {fineTune.rate?.["3BD"]}</label>
+          </div>
+        </div>
+
         <button onClick={handleSubmit} type="button">Update</button>
       </form>
     </div>

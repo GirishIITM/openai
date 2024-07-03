@@ -5,8 +5,10 @@ export interface fineTuneType {
     prompt?: string,
     maxToken?: number,
     temperature?: number,
-    topP?: number,
     maxCharacters?: number,
+    rate?: {
+        [key: string]: number
+    },
     eroor: string
 }
 
@@ -18,7 +20,7 @@ export async function getfineTune(): Promise<fineTuneType> {
     } catch (error) {
         console.error(error);
         toast.error("Error: " + error);
-        return { prompt: "", maxToken: 0, temperature: 0, topP: 0, maxCharacters: 0, eroor: "Error: " + error };
+        return { prompt: "", maxToken: 0, temperature: 0, maxCharacters: 0, eroor: "Error: " + error };
     }
 }
 
