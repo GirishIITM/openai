@@ -8,8 +8,10 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
 from db import client
+from fetchSheets import fetchSheetData
+import os
 
-api_key = "sk-proj-2sHF2xEZiznorUs4TMd3T3BlbkFJl9c9z1PspIx0udBsDHHI"
+api_key = os.getenv("OPENAI_API_KEY")
 
 messages = {}
 data = {}
@@ -100,6 +102,7 @@ def openAi(query):
     
 def openAiChat(req):
     try:
+        fetchSheetData()
         userId = req["userId"]
         prompt = req["prompt"]
         db = client['user_db']
