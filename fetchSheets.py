@@ -20,7 +20,7 @@ def fetchSheetData():
         if not values:
             print('No data found.')
         else:
-            print(values)
+            # print(values)
             with open('apartment_data.csv', mode='w', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerows(values)
