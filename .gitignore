@@ -6,3 +6,4 @@ dist
 chroma
 .vscode
 .env
+environment.config

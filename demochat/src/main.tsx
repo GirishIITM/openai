@@ -5,7 +5,7 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://16.171.249.22:5000'
+axios.defaults.baseURL = 'http://flask-env.eba-uwqjkunp.us-west-2.elasticbeanstalk.com/'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
