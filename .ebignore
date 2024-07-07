@@ -1,2 +1,8 @@
 myenv
 chroma
+__pycache__
+node_modules
+demochat
+dist
+.vscode
+.idea
