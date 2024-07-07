@@ -4,3 +4,7 @@ __pycache__
 node_modules
 dist
 chroma
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
