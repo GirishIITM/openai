@@ -31,10 +31,10 @@ def gfineTune():
     return jsonify(response)
 
 
-if __name__ == '__application__':
+if __name__ == "__main__":
     try:
         client.admin.command('ping')
         print("Pinged your deployment. You successfully connected to MongoDB!")
-        application.run(host='0.0.0.0', port=8080)
+        application.run(host='0.0.0.0', port=8080,debug=True)
     except Exception as e:
         print(e)
